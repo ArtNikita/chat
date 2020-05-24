@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void welcome() throws IOException {
-        out.writeUTF("Hello " + nickName);
+        out.writeUTF("Hello " + nickName + "\nServer commands:\n1. /w nick your message\n2. /exit");
         out.flush();
     }
 
@@ -39,13 +39,13 @@ public class ClientHandler implements Runnable {
             message = message.replace(targetNickName + " ", "");
             for (ClientHandler client : Server.getClients()) {
                 if (client.getNickName().equals(targetNickName)) {
-                    client.sendMessage("Message from " + this.getNickName() + ": " + message);
+                    client.sendMessage("Personal message from " + this.getNickName() + ":\n" + message);
                 }
             }
         } else {
             for (ClientHandler client : Server.getClients()) {
                 if (!client.equals(this)) {
-                    client.sendMessage(message);
+                    client.sendMessage(nickName + ":\n" + message);
                 }
             }
         }
